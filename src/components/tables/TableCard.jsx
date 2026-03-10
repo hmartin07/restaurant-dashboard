@@ -7,6 +7,8 @@ function TableCard({ order, onSelect, isSelected }) {
     0,
   );
 
+  const itemCount = order.items.reduce((sum, item) => sum + item.qty, 0);
+
   return (
     <div
       onClick={() => onSelect(order)}
@@ -36,7 +38,9 @@ function TableCard({ order, onSelect, isSelected }) {
 
       <StatusBadge status={order.status} />
 
-      <p className="mt-4 text-xl font-bold text-gray-800">
+      <p className="mt-3 text-sm text-gray-500">{itemCount} items</p>
+
+      <p className="mt-1 text-xl font-bold text-gray-800">
         ${total.toFixed(2)}
       </p>
     </div>

@@ -1,6 +1,7 @@
 import TableCard from "../components/tables/TableCard";
 import OrderDetail from "../components/orders/OrderDetail";
 import { useOrders } from "../hooks/useOrders";
+import DashboardStats from "../components/dashboard/DashboardStats";
 
 function Dashboard() {
   const { orders, selectedOrder, setSelectedOrder } = useOrders();
@@ -9,6 +10,7 @@ function Dashboard() {
     <div className="max-w-7xl mx-auto px-6 py-10">
       <div className="flex items-center justify-between mb-8">
         <h2 className="text-2xl font-semibold text-gray-800">Active Tables</h2>
+        <DashboardStats orders={orders} />
 
         <span className="text-sm text-gray-500">
           {orders.length} active orders
