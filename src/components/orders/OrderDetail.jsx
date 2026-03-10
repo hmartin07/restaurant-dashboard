@@ -4,17 +4,10 @@ import OrderItem from "./OrderItem";
 function OrderDetail({ order }) {
   if (!order) {
     return (
-      <div
-        className="
-bg-white
-rounded-2xl
-shadow-md
-p-8
-text-gray-400
-text-center
-"
-      >
-        Select a table to see order details
+      <div className="bg-white rounded-2xl shadow-sm p-10 text-center border border-gray-100">
+        <p className="text-gray-400 text-lg">
+          Select a table to see order details
+        </p>
       </div>
     );
   }
@@ -48,7 +41,9 @@ border-gray-100
       </div>
 
       <div className="border-t mt-6 pt-4">
-        <p className="text-lg font-semibold">Total: ${total}</p>
+        <p className="text-lg font-bold text-gray-800">
+          Total: ${total.toFixed(2)}
+        </p>
       </div>
     </div>
   );

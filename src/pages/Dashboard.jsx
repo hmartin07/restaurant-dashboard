@@ -6,13 +6,17 @@ function Dashboard() {
   const { orders, selectedOrder, setSelectedOrder } = useOrders();
 
   return (
-    <div className="max-w-7xl mx-auto px-8 py-10">
-      <h2 className="text-2xl font-semibold mb-8 text-gray-800">
-        Active Tables
-      </h2>
+    <div className="max-w-7xl mx-auto px-6 py-10">
+      <div className="flex items-center justify-between mb-8">
+        <h2 className="text-2xl font-semibold text-gray-800">Active Tables</h2>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-        {/* LEFT SIDE - TABLES */}
+        <span className="text-sm text-gray-500">
+          {orders.length} active orders
+        </span>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* TABLES */}
 
         <div className="lg:col-span-2">
           <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
@@ -21,14 +25,15 @@ function Dashboard() {
                 key={order.id}
                 order={order}
                 onSelect={setSelectedOrder}
+                isSelected={selectedOrder?.id === order.id}
               />
             ))}
           </div>
         </div>
 
-        {/* RIGHT SIDE - ORDER DETAIL */}
+        {/* ORDER DETAIL */}
 
-        <div>
+        <div className="sticky top-24">
           <OrderDetail order={selectedOrder} />
         </div>
       </div>

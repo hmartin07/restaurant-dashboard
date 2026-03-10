@@ -1,10 +1,10 @@
 function OrderItem({ item }) {
   return (
-    <div className="flex justify-between text-gray-700">
-      <span>{item.name}</span>
+    <div className="flex justify-between items-center text-gray-700">
+      <span className="font-medium">{item.name}</span>
 
-      <span className="font-medium">
-        x{item.qty} — ${item.qty * item.price}
+      <span className="text-sm text-gray-500">
+        x{item.qty} — ${(item.qty * item.price).toFixed(2)}
       </span>
     </div>
   );
