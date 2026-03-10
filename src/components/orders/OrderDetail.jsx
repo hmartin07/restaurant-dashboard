@@ -22,10 +22,11 @@ function OrderDetail({ order }) {
       className="
 bg-white
 rounded-2xl
-shadow-md
+shadow-lg
 p-8
 border
 border-gray-100
+transition-all
 "
     >
       <h2 className="text-xl font-bold mb-4 text-gray-800">

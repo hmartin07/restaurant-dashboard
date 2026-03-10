@@ -13,17 +13,19 @@ function TableCard({ order, onSelect, isSelected }) {
     <div
       onClick={() => onSelect(order)}
       className={`
-        bg-white
-        rounded-2xl
-        p-6
-        shadow-sm
-        hover:shadow-lg
-        transition
-        cursor-pointer
-        border
-        border-gray-100
-        hover:-translate-y-1
-        hover:border-gray-200
+bg-white
+rounded-2xl
+p-6
+shadow-md
+hover:shadow-xl
+transition-all
+duration-200
+cursor-pointer
+border
+border-gray-100
+hover:-translate-y-1
+hover:border-blue-200
+active:scale-95y-200
         active:scale-95
         ${isSelected ? "ring-2 ring-blue-500 border-blue-200" : ""}
       `}
@@ -40,7 +42,7 @@ function TableCard({ order, onSelect, isSelected }) {
 
       <p className="mt-3 text-sm text-gray-500">{itemCount} items</p>
 
-      <p className="mt-1 text-xl font-bold text-gray-800">
+      <p className="mt-1 text-2xl font-bold text-gray-800">
         ${total.toFixed(2)}
       </p>
     </div>
