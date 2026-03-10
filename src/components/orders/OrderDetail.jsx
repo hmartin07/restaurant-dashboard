@@ -1,13 +1,18 @@
 import StatusBadge from "../ui/StatusBadge";
 import OrderItem from "./OrderItem";
+import { FaUtensils } from "react-icons/fa";
 
 function OrderDetail({ order }) {
   if (!order) {
     return (
-      <div className="bg-white rounded-2xl shadow-sm p-10 text-center border border-gray-100">
-        <p className="text-gray-400 text-lg">
-          Select a table to see order details
-        </p>
+      <div className="bg-white rounded-2xl shadow-md p-8 text-gray-400 flex flex-col items-center justify-center gap-4 text-center">
+        <FaUtensils className="text-3xl opacity-50" />
+
+        <p className="font-medium">Select a table to see order details</p>
+
+        <span className="text-sm text-gray-400">
+          Orders will appear here once a table is selected
+        </span>
       </div>
     );
   }

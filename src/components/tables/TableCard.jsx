@@ -16,19 +16,17 @@ function TableCard({ order, onSelect, isSelected }) {
 bg-white
 rounded-2xl
 p-6
-shadow-md
-hover:shadow-xl
-transition-all
-duration-200
+shadow-sm
+hover:shadow-lg
+transition-all duration-200 ease-out
 cursor-pointer
 border
-border-gray-100
+border-gray-200
 hover:-translate-y-1
-hover:border-blue-200
-active:scale-95y-200
-        active:scale-95
-        ${isSelected ? "ring-2 ring-blue-500 border-blue-200" : ""}
-      `}
+hover:scale-[1.02]
+active:scale-95
+${isSelected ? "ring-2 ring-blue-500 border-blue-200" : ""}
+`}
     >
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-semibold text-gray-800">
