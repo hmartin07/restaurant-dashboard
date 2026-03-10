@@ -133,6 +133,48 @@ The main design principles for this project were:
 
 ---
 
+## Requirements
+
+- Node.js 18+
+- npm
+
+## Getting Started
+
+Clone the repository:
+
+```bash
+git clone https://github.com/hmartin07/restaurant-dashboard.git
+cd restaurant-dashboard
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run the development server:
+
+```bash
+npm run dev
+```
+
+Open the application at:
+
+```
+http://localhost:5173
+```
+
+---
+
+## Update README
+
+In your terminal run:
+
+```bash
+git add README.md
+```
+
 # Author
 
 **Martín Zacarías Gómez Arteaga**  
