@@ -133,6 +133,18 @@ The main design principles for this project were:
 
 ---
 
+## Improvements
+
+The dashboard was extended with several UX and usability improvements:
+
+- Table locking when occupied
+- Order status workflow (pending → preparing → served)
+- Menu with category filters and search
+- Cart quantity controls (+ / -)
+- Order drawer with detailed information
+- Removal of decorative icons to maintain ERP-style UI clarity
+- Visual time alerts for orders
+
 ## Requirements
 
 - Node.js 18+
