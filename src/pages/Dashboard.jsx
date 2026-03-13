@@ -1,15 +1,21 @@
+import { useState } from "react";
 import TableCard from "../components/tables/TableCard";
-import OrderDetail from "../components/orders/OrderDetail";
 import { useOrders } from "../hooks/useOrders";
 import DashboardStats from "../components/dashboard/DashboardStats";
+import OrderDrawer from "../components/orders/OrderDrawer";
 
 function Dashboard() {
-  const { orders, selectedOrder, setSelectedOrder } = useOrders();
+  const { orders, selectedOrder, setSelectedOrder, deleteOrder } = useOrders();
+
+  const [filter, setFilter] = useState("all");
+
+  const filteredOrders =
+    filter === "all" ? orders : orders.filter((o) => o.status === filter);
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-10">
       {/* HEADER */}
-      <div className="mb-8">
+      <div className="mb-10">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-2xl font-semibold text-gray-800">
             Active Tables
@@ -20,30 +26,33 @@ function Dashboard() {
           </span>
         </div>
 
-        <DashboardStats orders={orders} />
+        <DashboardStats
+          orders={orders}
+          onFilter={setFilter}
+          activeFilter={filter}
+        />
       </div>
 
-      {/* MAIN GRID */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* TABLES */}
-        <div className="lg:col-span-2">
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-            {orders.map((order) => (
-              <TableCard
-                key={order.id}
-                order={order}
-                onSelect={setSelectedOrder}
-                isSelected={selectedOrder?.id === order.id}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* ORDER DETAIL */}
-        <div className="sticky top-24">
-          <OrderDetail order={selectedOrder} />
-        </div>
+      {/* TABLE GRID */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {[...filteredOrders]
+          .sort((a, b) => a.createdAt - b.createdAt)
+          .map((order) => (
+            <TableCard
+              key={order.id}
+              order={order}
+              onSelect={setSelectedOrder}
+              onDelete={deleteOrder}
+              isSelected={selectedOrder?.id === order.id}
+            />
+          ))}
       </div>
+
+      {/* DRAWER */}
+      <OrderDrawer
+        order={selectedOrder}
+        onClose={() => setSelectedOrder(null)}
+      />
     </div>
   );
 }
