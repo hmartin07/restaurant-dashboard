@@ -11,6 +11,12 @@ function notify() {
   listeners.forEach((l) => l([...globalOrders]));
 }
 
+// generar número de orden visible para cocina
+function generateOrderNumber() {
+  const last = globalOrders[globalOrders.length - 1];
+  return last ? last.orderNumber + 1 : 1;
+}
+
 export function useOrders() {
 
   const [orders, setOrders] = useState(globalOrders);
@@ -24,33 +30,55 @@ export function useOrders() {
     };
   }, []);
 
-const createOrder = (data) => {
+  const createOrder = (data) => {
 
-  // 🚫 verificar si la mesa ya tiene orden activa
-  const tableBusy = globalOrders.some(
-    (order) =>
-      order.table === data.table && order.status !== "served"
-  );
+    // verificar si la mesa ya tiene orden activa
+    const tableBusy = globalOrders.some(
+      (order) =>
+        order.table === data.table && order.status !== "served"
+    );
 
-  if (tableBusy) {
-    alert(`Table ${data.table} already has an active order`);
-    return;
-  }
+    if (tableBusy) {
+      alert(`Table ${data.table} already has an active order`);
+      return;
+    }
 
-  const newOrder = {
-    id: Date.now(),
-    table: data.table,
-    status: "pending",
-    createdAt: Date.now(),
-    items: data.items,
-    notes: data.notes
+    const now = Date.now();
+
+    const newOrder = {
+      id: now,
+
+      // 🆕 número de orden para cocina
+      orderNumber: generateOrderNumber(),
+
+      table: data.table,
+
+      // 🆕 cliente
+      customerName: data.customerName || "",
+
+      // 🆕 número de personas
+      partySize: data.partySize || 1,
+
+      status: "pending",
+
+      createdAt: now,
+
+      // 🆕 tiempo estimado preparación
+      estimatedPrepTime: 10, // minutos
+
+      items: data.items,
+
+      notes: data.notes || "",
+
+      // 🆕 prioridad automática
+      priority: data.items.length >= 5 ? "high" : "normal"
+    };
+
+    globalOrders = [...globalOrders, newOrder];
+
+    save();
+    notify();
   };
-
-  globalOrders = [...globalOrders, newOrder];
-
-  save();
-  notify();
-};
 
   const deleteOrder = (id) => {
 

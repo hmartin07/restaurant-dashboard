@@ -1,15 +1,12 @@
 function TableSelector({ tables, selectedTable, onSelect, orders }) {
-  const occupiedTables = orders
-    .filter((o) => o.status !== "served")
-    .map((o) => o.table);
+  const activeOrders = orders.filter((o) => o.status !== "served");
 
   return (
     <div className="mb-8">
-      <p className="text-sm text-gray-500 mb-2">Select Table</p>
-
-      <div className="flex gap-2 flex-wrap">
+      <div className="flex gap-2 overflow-x-auto pb-2">
         {tables.map((table) => {
-          const isOccupied = occupiedTables.includes(table);
+          const order = activeOrders.find((o) => o.table === table);
+          const isOccupied = !!order;
 
           return (
             <button
@@ -17,18 +14,28 @@ function TableSelector({ tables, selectedTable, onSelect, orders }) {
               disabled={isOccupied}
               onClick={() => onSelect(table)}
               className={`
-                px-4 py-2 rounded-lg border transition
+                relative
+                px-4 py-3
+                rounded-xl
+                border
+                text-sm
+                transition
+                min-w-[70px]
+                font-medium
 
                 ${
                   isOccupied
-                    ? "bg-red-100 text-red-600 border-red-200 cursor-not-allowed"
+                    ? "bg-red-100 border-red-300 text-red-700 cursor-not-allowed"
                     : selectedTable === table
                       ? "bg-blue-600 text-white border-blue-600"
-                      : "bg-white border-gray-200 hover:bg-gray-100"
+                      : "bg-white hover:bg-gray-50 border-gray-200"
                 }
               `}
             >
               Table {table}
+              {isOccupied && (
+                <span className="absolute top-1 right-2 text-xs">🔴</span>
+              )}
             </button>
           );
         })}

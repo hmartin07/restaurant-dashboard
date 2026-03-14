@@ -24,18 +24,34 @@ function TableCard({ order, onSelect, isSelected, onDelete }) {
 
   const minutes = Math.floor((now - order.createdAt) / 60000);
 
-  /* TIME ALERT SYSTEM */
+  /* TIME ALERT */
 
-  let timeColor = "text-green-500";
+  let timeColor = "text-gray-400";
   let borderAlert = "";
 
   if (minutes > 5) {
-    timeColor = "text-yellow-500";
+    timeColor = "text-yellow-600";
   }
 
   if (minutes > 10) {
     timeColor = "text-red-600";
-    borderAlert = "border-red-400 ring-1 ring-red-300";
+    borderAlert = "border-red-300 ring-1 ring-red-200";
+  }
+
+  /* TABLE STATUS COLOR (PRO DASHBOARD STYLE) */
+
+  let tableStatusColor = "border-gray-200";
+
+  if (order.status === "pending") {
+    tableStatusColor = "border-yellow-400";
+  }
+
+  if (order.status === "preparing") {
+    tableStatusColor = "border-red-400";
+  }
+
+  if (order.status === "served") {
+    tableStatusColor = "border-green-400";
   }
 
   /* ACTIONS */
@@ -60,30 +76,54 @@ function TableCard({ order, onSelect, isSelected, onDelete }) {
       onClick={() => onSelect(order)}
       className={`
         bg-white
-        rounded-2xl
-        p-6
+        rounded-lg
+        p-5
+        border-2
+        ${tableStatusColor}
         shadow-sm
-        hover:shadow-lg
-        transition-all duration-200 ease-out
+        hover:shadow-md
+        transition
         cursor-pointer
-        border
-        border-gray-200
-        hover:-translate-y-1
-        hover:scale-[1.02]
-        active:scale-95
         ${borderAlert}
         ${isSelected ? "ring-2 ring-blue-500 border-blue-200" : ""}
       `}
     >
       {/* HEADER */}
 
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-gray-800">
-          Table {order.table}
-        </h3>
+      <div className="flex items-start justify-between mb-3">
+        <div>
+          {/* ORDER NUMBER */}
 
-        <span className="text-xs text-gray-400 font-medium">
-          Order #{order.id}
+          <p className="text-xs text-gray-400 font-medium">
+            Order #{order.orderNumber}
+          </p>
+
+          {/* CUSTOMER NAME */}
+
+          {order.customerName && (
+            <p className="text-sm font-semibold text-gray-900">
+              {order.customerName}
+            </p>
+          )}
+
+          {/* TABLE + PARTY SIZE */}
+
+          <p className="text-sm text-gray-500">
+            Table {order.table}
+            {order.partySize && ` • ${order.partySize} people`}
+          </p>
+
+          {/* OCCUPIED INDICATOR */}
+
+          {order.status !== "served" && (
+            <p className="text-xs text-red-500 font-medium mt-1">● Occupied</p>
+          )}
+        </div>
+
+        {/* ORDER ID */}
+
+        <span className="text-xs text-gray-300 font-medium">
+          #{String(order.id).slice(-4)}
         </span>
       </div>
 
@@ -91,37 +131,60 @@ function TableCard({ order, onSelect, isSelected, onDelete }) {
 
       <StatusBadge status={order.status} />
 
-      {/* ORDER INFO */}
+      {/* ITEMS - KITCHEN STYLE */}
 
-      <div className="mt-4 space-y-1">
-        <p className="text-sm text-gray-500">
+      <div className="mt-4 space-y-1 text-sm">
+        {order.items.map((item, index) => (
+          <div key={index} className="flex justify-between items-start">
+            <span className="flex gap-2 text-gray-800">
+              <span className="font-semibold text-gray-900 min-w-[22px]">
+                {item.qty}×
+              </span>
+
+              <span className="break-words">{item.name}</span>
+            </span>
+
+            <span className="text-gray-400 text-xs">
+              ${(item.qty * item.price).toFixed(2)}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      {/* INFO */}
+
+      <div className="mt-4 flex items-center justify-between text-sm">
+        <span className="text-gray-500">
           {itemCount} item{itemCount !== 1 && "s"}
-        </p>
+        </span>
 
-        <p className={`text-xs font-semibold ${timeColor}`}>
-          {minutes} min elapsed
-        </p>
+        <span className={`font-semibold ${timeColor}`}>{minutes} min</span>
       </div>
 
       {/* TOTAL */}
 
-      <p className="mt-3 text-2xl font-bold text-gray-800">
-        ${total.toFixed(2)}
-      </p>
+      <div className="mt-3 border-t border-gray-100 pt-3 flex items-center justify-between">
+        <span className="text-sm text-gray-500">Total</span>
 
-      {/* ACTION BUTTONS */}
+        <span className="text-lg font-semibold text-gray-900">
+          ${total.toFixed(2)}
+        </span>
+      </div>
+
+      {/* ACTIONS */}
 
       <div className="mt-4 flex gap-2">
         {order.status === "pending" && (
           <button
             onClick={startCooking}
             className="
-              text-xs
+              flex-1
+              text-sm
               bg-yellow-500
               hover:bg-yellow-600
               text-white
-              px-3 py-1
-              rounded-lg
+              py-2
+              rounded-md
               transition
             "
           >
@@ -133,12 +196,13 @@ function TableCard({ order, onSelect, isSelected, onDelete }) {
           <button
             onClick={markReady}
             className="
-              text-xs
+              flex-1
+              text-sm
               bg-green-600
               hover:bg-green-700
               text-white
-              px-3 py-1
-              rounded-lg
+              py-2
+              rounded-md
               transition
             "
           >
@@ -150,12 +214,13 @@ function TableCard({ order, onSelect, isSelected, onDelete }) {
           <button
             onClick={clearTable}
             className="
-              text-xs
-              bg-gray-600
-              hover:bg-gray-700
+              flex-1
+              text-sm
+              bg-gray-700
+              hover:bg-gray-800
               text-white
-              px-3 py-1
-              rounded-lg
+              py-2
+              rounded-md
               transition
             "
           >
